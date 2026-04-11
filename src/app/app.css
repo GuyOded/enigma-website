@@ -1,0 +1,43 @@
+body {
+  background: #f5f7fb;
+  font-family: "Inter", sans-serif;
+}
+
+.main-container {
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 56px;
+
+  background: white;
+  border-radius: 12px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.title {
+  font-size: 44px;
+  text-align: center;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+
+  color: #1a1a1a;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: #6b7280;
+  margin-bottom: 48px;
+  text-transform: uppercase;
+}
+
+.subtitle::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 1px;
+  margin: 16px auto 0;
+  background: rgba(0, 0, 0, 0.2);
+}
