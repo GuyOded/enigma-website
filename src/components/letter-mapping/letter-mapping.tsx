@@ -1,5 +1,6 @@
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import type { Arrow } from "./types";
+import { calculateArrowPositions } from "./utils";
 
 export interface LetterMappingProps {
     readonly from: string[];
@@ -24,35 +25,35 @@ export const LetterMapping = ({
     useLayoutEffect(() => {
         if (!enableArrows) return;
 
-        const nextArrows = from
-            .map((fromValue, i) => {
-                const toValue = to[i];
-                if (!containerRef.current) {
-                    return null;
-                }
+        const setNextArrows = () => {
+            const nextArrows = from
+                .map((fromValue, i) => {
+                    const toValue = to[i];
+                    if (!containerRef.current) {
+                        return null;
+                    }
 
-                const fromElem = fromCellsRef.current.get(
-                    `${fromId}-${fromValue}`,
-                );
-                const toElem = toCellsRef.current.get(`${toId}-${toValue}`);
-                if (!fromElem || !toElem) return null;
+                    const fromElem = fromCellsRef.current.get(
+                        `${fromId}-${fromValue}`,
+                    );
+                    const toElem = toCellsRef.current.get(`${toId}-${toValue}`);
+                    if (!fromElem || !toElem) return null;
 
-                const fromBoundingBox = fromElem.getBoundingClientRect();
-                const toBoundingBox = toElem.getBoundingClientRect();
+                    return calculateArrowPositions(fromElem, toElem);
+                })
+                .filter(Boolean) as Arrow[];
+            setArrows(nextArrows);
+        };
 
-                return {
-                    from: {
-                        x: fromBoundingBox.left + fromBoundingBox.width / 2,
-                        y: fromBoundingBox.top + fromBoundingBox.height,
-                    },
-                    to: {
-                        x: toBoundingBox.left + toBoundingBox.width / 2,
-                        y: toBoundingBox.top,
-                    },
-                };
-            })
-            .filter(Boolean) as Arrow[];
-        setArrows(nextArrows);
+        setNextArrows();
+
+        window.addEventListener("resize", setNextArrows);
+        window.visualViewport?.addEventListener("resize", setNextArrows);
+
+        return () => {
+            window.removeEventListener("resize", setNextArrows);
+            window.visualViewport?.removeEventListener("resize", setNextArrows);
+        };
     }, [from, to, enableArrows, fromId, toId]);
 
     return (
@@ -65,7 +66,7 @@ export const LetterMapping = ({
                     <div
                         id={`${fromId}-${cellValue}`}
                         key={`${fromId}-${cellValue}`}
-                        className="flex items-center justify-center w-10 h-10 rounded bg-cyan-100"
+                        className="flex items-center justify-center w-8 h-8 rounded bg-cyan-100"
                         ref={(div) => {
                             if (div)
                                 fromCellsRef.current.set(
@@ -78,7 +79,7 @@ export const LetterMapping = ({
                                 );
                         }}
                     >
-                        {cellValue}
+                        <p className="font-bold text-xl">{cellValue}</p>
                     </div>
                 ))}
             </div>
@@ -87,7 +88,7 @@ export const LetterMapping = ({
                     <div
                         id={`${toId}-${cellValue}`}
                         key={`${toId}-${cellValue}`}
-                        className="flex items-center justify-center w-10 h-10 rounded bg-cyan-100"
+                        className="flex items-center justify-center w-8 h-8 rounded bg-cyan-100"
                         ref={(div) => {
                             if (div)
                                 toCellsRef.current.set(
@@ -100,7 +101,7 @@ export const LetterMapping = ({
                                 );
                         }}
                     >
-                        {cellValue}
+                        <p className="font-bold text-xl">{cellValue}</p>
                     </div>
                 ))}
             </div>

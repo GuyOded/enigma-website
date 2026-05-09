@@ -1,7 +1,7 @@
 import { Layout, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import "./app.css";
-import { LetterMapping } from "../components/letter-mapping/letter-mapping";
+import { CaesarCipherLetterMapping } from "../components/caesar-cipher-letter-mapping/caesar-cipher-letter-mapping";
 
 function App() {
     return (
@@ -33,11 +33,7 @@ function App() {
                         consecutive letter in the order they appear in the
                         alphabet. In the English alphabet, that would mean:
                     </Typography.Paragraph>
-                    <LetterMapping
-                        from={["A", "B", "C"]}
-                        to={["B", "C", "D"]}
-                        enableArrows={true}
-                    />
+                    <CaesarCipherLetterMapping enableArrows={true} />
                 </div>
             </Content>
         </Layout>
