@@ -39,7 +39,11 @@ export const LetterMapping = ({
                     const toElem = toCellsRef.current.get(`${toId}-${toValue}`);
                     if (!fromElem || !toElem) return null;
 
-                    return calculateArrowPositions(fromElem, toElem);
+                    return calculateArrowPositions(
+                        fromElem,
+                        toElem,
+                        containerRef.current,
+                    );
                 })
                 .filter(Boolean) as Arrow[];
             setArrows(nextArrows);
@@ -59,7 +63,7 @@ export const LetterMapping = ({
     return (
         <div
             ref={containerRef}
-            className={`flex flex-col ${enableArrows ? "gap-25" : "gap-4"}`}
+            className={`relative flex flex-col ${enableArrows ? "gap-25" : "gap-4"}`}
         >
             <div className="flex flex-row gap-2">
                 {from.map((cellValue) => (
