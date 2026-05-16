@@ -1,10 +1,12 @@
-import { Layout, Typography } from "antd";
+import { Collapse, Layout, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import "./app.css";
 import "katex/dist/katex.min.css";
 import { InlineMath } from "react-katex";
 import { CaesarCipherLetterMapping } from "../components/caesar-cipher-letter-mapping/caesar-cipher-letter-mapping";
 import Text from "antd/es/typography/Text";
+import { SubstitutionCipherLetterMapping } from "../components/substitution-cipher-letter-mapping/substitution-cipher-letter-mapping";
+import Link from "antd/es/typography/Link";
 
 function App() {
     return (
@@ -131,7 +133,183 @@ function App() {
                     <Typography.Paragraph>
                         This leads us to the second type of substitution cipher,
                         letter transpositions, or more commonly known as letter
-                        swapping.
+                        swapping. In this cipher, every letter is swapped for
+                        another. For example:
+                    </Typography.Paragraph>
+                    <div className="pb-8">
+                        <SubstitutionCipherLetterMapping
+                            letterMap={{ A: "L", Y: "V", Q: "M" }}
+                        />
+                    </div>
+                    <Typography.Paragraph>
+                        In order to encrypt, one would swap each letter in the
+                        mapping with its mapped counterpart, in this case each
+                        &apos;A&apos; with &apos;L&apos; and each &apos;L&apos;
+                        with &apos;A&apos; and so on for the other pairs.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        As before, this cipher scheme is very weak because each
+                        letter has a constant mapping. So given a long cipher
+                        text you could guess the letter mapping simply from
+                        their frequency in the text. You can try solving a
+                        cipher very similar for this right here:{" "}
+                        <Link href="https://api.razzlepuzzles.com/cryptogram">
+                            Cryptograms
+                        </Link>
+                        .
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        The key for this cipher is the mapping itself, which is
+                        one of its strengths, since there are many possible ways
+                        to construct such a mapping. Note also that decryption
+                        is performed by applying the same mapping again to the
+                        ciphertext, as the mapping is its own inverse.
+                    </Typography.Paragraph>
+                    <div className="pb-4">
+                        <Collapse
+                            items={[
+                                {
+                                    key: 1,
+                                    label: "How many letter subs are there?",
+                                    children: (
+                                        <>
+                                            <Typography.Paragraph>
+                                                In our case, a letter
+                                                substitution map consists of
+                                                pairs of letters, where each
+                                                letter can appear in at most one
+                                                pair. To count the number of
+                                                possible maps, we first
+                                                determine how many distinct sets
+                                                of non-repeating letter pairs
+                                                can be formed.
+                                            </Typography.Paragraph>
+                                            <Typography.Paragraph>
+                                                We begin with the simplest case:
+                                                a map consisting of a single
+                                                pair, for example (A B). To
+                                                construct such a pair, we first
+                                                choose one letter out of 26
+                                                possibilities, and then choose a
+                                                different second letter out of
+                                                the remaining 25 possibilities.
+                                                Therefore, the total number of
+                                                ordered pairs is 26⋅25
+                                            </Typography.Paragraph>
+                                            <Typography.Paragraph>
+                                                However, pairs such as (A B) and
+                                                (B A) represent the same
+                                                substitution map, so we have
+                                                counted every map twice. To
+                                                correct for this overcounting,
+                                                we divide by 2, giving:
+                                                <InlineMath math="\frac{26 \cdot 25}{2} = 325"></InlineMath>
+                                                .
+                                            </Typography.Paragraph>
+                                            <Typography.Paragraph>
+                                                We now repeat the same process
+                                                for maps consisting of two
+                                                letter pairs. First, we choose
+                                                four distinct letters, which can
+                                                be done in{" "}
+                                                <InlineMath math="26 \cdot 25 \cdot 24 \cdot 23" />{" "}
+                                                ways.
+                                            </Typography.Paragraph>
+
+                                            <Typography.Paragraph>
+                                                As before, the order of letters
+                                                inside each pair does not
+                                                matter, since pairs such as (A
+                                                B) and (B A) represent the same
+                                                substitution. Therefore, we
+                                                divide by 2 for each pair,
+                                                giving a factor of{" "}
+                                                <InlineMath math="2^2" />.
+                                            </Typography.Paragraph>
+
+                                            <Typography.Paragraph>
+                                                In addition, the order of the
+                                                pairs themselves is irrelevant:
+                                                (A B)(C D) represents the same
+                                                map as (C D)(A B). Since there
+                                                are <InlineMath math="2!" />{" "}
+                                                ways to order two pairs, we
+                                                divide by another factor of{" "}
+                                                <InlineMath math="2" />.
+                                            </Typography.Paragraph>
+
+                                            <Typography.Paragraph>
+                                                Altogether, the number of
+                                                possible maps consisting of two
+                                                pairs is{" "}
+                                                <InlineMath math="\frac{26 \cdot 25 \cdot 24 \cdot 23}{2^2 \cdot 2!}=44850" />
+                                                .
+                                            </Typography.Paragraph>
+                                            <Typography.Paragraph>
+                                                As you can see there are a lot
+                                                more possibilities for two pairs
+                                                than for a single pair. We can
+                                                continue this process for three,
+                                                four and so on up to 13 pairs,
+                                                summing all the possibilities on
+                                                the way. You can continue this
+                                                process for yourself, but for
+                                                matters of perspective the
+                                                number of substitutions
+                                                consisting of 13 pairs is:{" "}
+                                                {(7905853580625).toLocaleString()}
+                                                . Which is quite a bit to go
+                                                through even for a modern
+                                                computer.
+                                            </Typography.Paragraph>
+                                        </>
+                                    ),
+                                },
+                            ]}
+                        ></Collapse>
+                    </div>
+                    <Typography.Paragraph>
+                        The military Enigma machine combines both ciphers,
+                        leveraging their strengths to compensate for their
+                        weaknesses.
+                    </Typography.Paragraph>
+                    <Typography.Title level={2}>
+                        The Enigma Encryption Scheme
+                    </Typography.Title>
+                    <Typography.Paragraph>
+                        An Enigma machine consisted of three main components: a
+                        keyboard and letter display, a plugboard, and a set of
+                        rotating rotors. The rotors work very similarly to the
+                        Caesar cipher described above.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        To encrypt a message, the operator first configured the
+                        machine by setting the initial rotor positions and the
+                        plugboard connections. When a key was pressed on the
+                        keyboard, an electrical signal traveled through the
+                        plugboard and rotors before causing a different letter
+                        to light up on the display. This illuminated letter was
+                        the encrypted version of the typed character.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        After each key press, the rotors rotated, changing the
+                        internal wiring of the machine. As a result, the same
+                        input letter could encrypt to different output letters
+                        at different points in the message. This continuous
+                        change made the cipher significantly more difficult to
+                        break than a simple fixed substitution cipher.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        To decrypt a message, another Enigma machine had to be
+                        configured with the exact same settings used during
+                        encryption. The operator would then type the ciphertext
+                        into the keyboard, and the illuminated letters would
+                        reproduce the original plaintext message.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        The following is a 3d simulation illustrating how the
+                        three rotor enigma looks like. Try to encrypt and
+                        decrypt a message.
                     </Typography.Paragraph>
                 </div>
             </Content>

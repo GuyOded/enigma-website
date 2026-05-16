@@ -6,12 +6,19 @@ export interface LetterMappingProps {
     readonly from: string[];
     readonly to: string[];
     readonly enableArrows: boolean;
+    readonly doubleSided?: boolean;
+    readonly curvedArrows?: boolean;
+    readonly omitIdentity?: boolean;
 }
+const ARROW_HEIGHT = 10;
 
 export const LetterMapping = ({
     from,
     to,
     enableArrows,
+    doubleSided,
+    curvedArrows,
+    omitIdentity,
 }: LetterMappingProps) => {
     const fromId = useId();
     const toId = useId();
@@ -29,6 +36,10 @@ export const LetterMapping = ({
             const nextArrows = from
                 .map((fromValue, i) => {
                     const toValue = to[i];
+                    if (omitIdentity && toValue == fromValue) {
+                        return null;
+                    }
+
                     if (!containerRef.current) {
                         return null;
                     }
@@ -58,7 +69,7 @@ export const LetterMapping = ({
             window.removeEventListener("resize", setNextArrows);
             window.visualViewport?.removeEventListener("resize", setNextArrows);
         };
-    }, [from, to, enableArrows, fromId, toId]);
+    }, [from, to, enableArrows, fromId, toId, omitIdentity]);
 
     return (
         <div
@@ -88,7 +99,7 @@ export const LetterMapping = ({
                 ))}
             </div>
             <div className="flex flex-row gap-2">
-                {to.map((cellValue) => (
+                {(curvedArrows ? from : to).map((cellValue) => (
                     <div
                         id={`${toId}-${cellValue}`}
                         key={`${toId}-${cellValue}`}
@@ -115,7 +126,7 @@ export const LetterMapping = ({
                     <defs>
                         <marker
                             id="arrow"
-                            viewBox="0 0 10 10"
+                            viewBox={`0 0 ${ARROW_HEIGHT.toString()} ${ARROW_HEIGHT.toString()}`}
                             refX="8"
                             refY="5"
                             markerWidth="6"
@@ -128,18 +139,75 @@ export const LetterMapping = ({
                             />
                         </marker>
                     </defs>
-                    {arrows.map((arrow, i) => (
-                        <line
-                            key={i}
-                            className="stroke-current"
-                            x1={arrow.from.x}
-                            y1={arrow.from.y}
-                            x2={arrow.to.x}
-                            y2={arrow.to.y}
-                            strokeWidth={2}
-                            markerEnd="url(#arrow)"
-                        />
-                    ))}
+                    {arrows.map((arrow, i) => {
+                        if (curvedArrows) {
+                            const straightLength = ARROW_HEIGHT;
+
+                            const startX = arrow.from.x;
+                            const startY = arrow.from.y;
+                            const endX = arrow.to.x;
+                            const endY = arrow.to.y;
+
+                            const curveStartY = startY + straightLength;
+                            const curveEndY = endY - straightLength;
+
+                            const midY = (curveStartY + curveEndY) / 2;
+
+                            const d = [
+                                "M",
+                                String(startX),
+                                String(startY),
+
+                                // straight line out of arrowhead
+                                "L",
+                                String(startX),
+                                String(curveStartY),
+
+                                // curved middle section
+                                "C",
+                                String(startX),
+                                String(midY),
+                                String(endX),
+                                String(midY),
+                                String(endX),
+                                String(curveEndY),
+
+                                // straight line into arrowhead
+                                "L",
+                                String(endX),
+                                String(endY),
+                            ].join(" ");
+                            return (
+                                <path
+                                    key={i}
+                                    className="stroke-current"
+                                    d={d}
+                                    fill="none"
+                                    strokeWidth={2}
+                                    markerEnd="url(#arrow)"
+                                    markerStart={
+                                        doubleSided ? "url(#arrow)" : undefined
+                                    }
+                                />
+                            );
+                        }
+
+                        return (
+                            <line
+                                key={i}
+                                className="stroke-current"
+                                x1={arrow.from.x}
+                                y1={arrow.from.y}
+                                x2={arrow.to.x}
+                                y2={arrow.to.y}
+                                strokeWidth={2}
+                                markerEnd="url(#arrow)"
+                                markerStart={
+                                    doubleSided ? "url(#arrow)" : undefined
+                                }
+                            />
+                        );
+                    })}
                 </svg>
             )}
         </div>

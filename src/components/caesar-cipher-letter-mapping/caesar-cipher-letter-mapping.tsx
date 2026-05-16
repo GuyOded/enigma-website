@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { LetterMapping } from "../letter-mapping/letter-mapping";
-import { ABC } from "./consts";
+import { ABC } from "../../consts/consts";
 
 export interface ABCLetterMappingProps {
     enableArrows: boolean;
