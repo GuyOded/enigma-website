@@ -7,6 +7,7 @@ import { CaesarCipherLetterMapping } from "../components/caesar-cipher-letter-ma
 import Text from "antd/es/typography/Text";
 import { SubstitutionCipherLetterMapping } from "../components/substitution-cipher-letter-mapping/substitution-cipher-letter-mapping";
 import Link from "antd/es/typography/Link";
+import { UnityLoader } from "../components/unity-loader/unity-loader";
 
 function App() {
     return (
@@ -307,10 +308,15 @@ function App() {
                         reproduce the original plaintext message.
                     </Typography.Paragraph>
                     <Typography.Paragraph>
+                        There were other components like the reflectors that
+                        we&apos;ll get in a later section.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
                         The following is a 3d simulation illustrating how the
                         three rotor enigma looks like. Try to encrypt and
                         decrypt a message.
                     </Typography.Paragraph>
+                    <UnityLoader buildDataBasePath="../../../.local/v2.1.0" />
                 </div>
             </Content>
         </Layout>
