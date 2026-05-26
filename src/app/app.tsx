@@ -2,12 +2,13 @@ import { Collapse, Layout, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import "./app.css";
 import "katex/dist/katex.min.css";
-import { InlineMath } from "react-katex";
+import { BlockMath, InlineMath } from "react-katex";
 import { CaesarCipherLetterMapping } from "../components/caesar-cipher-letter-mapping/caesar-cipher-letter-mapping";
 import Text from "antd/es/typography/Text";
 import { SubstitutionCipherLetterMapping } from "../components/substitution-cipher-letter-mapping/substitution-cipher-letter-mapping";
 import Link from "antd/es/typography/Link";
 import { UnityLoader } from "../components/unity-loader/unity-loader";
+import RotorTable from "../components/rotor-table/rotor-table";
 
 function App() {
     return (
@@ -317,6 +318,187 @@ function App() {
                         decrypt a message.
                     </Typography.Paragraph>
                     <UnityLoader buildDataBasePath="../../../.local/v2.1.0" />
+                    <Typography.Title level={2}>
+                        The Encryption Function
+                    </Typography.Title>
+                    <Typography.Paragraph>
+                        Now let us dive in to the encryption process more
+                        thoroughly. I will first specify the encryption function
+                        with letters representing each stage of the encryption.
+                        We will then dive into what each letter means.
+                    </Typography.Paragraph>
+                    <BlockMath math="E = P^{-1}(C^{-k} R_1^{-1} C^k)(C^{-l} R_2^{-1} C^l)(C^{-m} R_3^{-1} C^m)U(C^{-m} R_3 C^m)(C^{-l} R_2 C^l)(C^{-k} R_1 C^k)P" />
+                    <Typography.Paragraph>
+                        The equation above means essentially means - the
+                        encryption function, <InlineMath math="E" />, is
+                        constructed by applying the components of the right hand
+                        side in order. We&apos;ll go through each of the
+                        components in order.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        <InlineMath math="P" /> for plugboard is the letter swap
+                        permutation determined by the plugboard connections.
+                        Note that this permutation is its own inverse. So{" "}
+                        <InlineMath math="P=P^{-1}" /> and{" "}
+                        <InlineMath math="P^2 = I" /> where{" "}
+                        <InlineMath math="I" /> is the identity meaning that for
+                        each letter <InlineMath math="l" />,{" "}
+                        <InlineMath math="I(l) = l" />.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        Next is the rotor permutation which consists of some
+                        generic permutation denoted by <InlineMath math="R_1" />{" "}
+                        surrounded by two Caesar ciphers raised to the power of{" "}
+                        <InlineMath math="k" /> and <InlineMath math="-k" />.
+                        The <InlineMath math="k" /> represents the position of
+                        the first rotor. So before a letter goes through{" "}
+                        <InlineMath math="R_1" /> it first passes through{" "}
+                        <InlineMath math="C^{-k}" /> which is the Caesar cipher
+                        that maps A to the (26-k)-th letter. And resultant
+                        letter, after passing through <InlineMath math="R_1" />{" "}
+                        passes through another Caesar cipher, mapping A to the
+                        k-th letter in the alphabet.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        Each rotor applied a different letter permutation. Most
+                        Enigma machines used three rotors, although some later
+                        wartime variants used four or even five. For most of the
+                        war, operators selected three rotors out of a set of
+                        five available rotors each day. The order of the rotors
+                        also mattered, since changing their positions changed
+                        the encryption. This resulted in 60 possible rotor
+                        arrangements. There are 10 ways to choose 3 rotors from
+                        5, and each choice can be ordered in 6 different ways,
+                        giving a total of <InlineMath math="10 \times 6 = 60" />{" "}
+                        configurations.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        The next component was the reflector. The reflector
+                        applied another letter-swapping permutation consisting
+                        of 13 letter pairs, meaning every letter was mapped to
+                        exactly one other letter. Its most important role was to
+                        send the electrical signal back through the machine
+                        after it passed through the rotors. On the return path,
+                        the signal passed through the rotors and plugboard in
+                        reverse order, applying their
+                        <Typography.Text strong={true}>
+                            inverse permutations
+                        </Typography.Text>
+                        . This design allowed the Enigma machine to use the same
+                        configuration for both encryption and decryption. The
+                        following section explains why:
+                        <Collapse
+                            items={[
+                                {
+                                    key: 1,
+                                    label: "Proof: Encrypting Twice with the Same Configuration Recovers the Original Message",
+                                    children: (
+                                        <>
+                                            <Typography.Paragraph>
+                                                All we need to show is that if{" "}
+                                                <InlineMath math="\alpha" />{" "}
+                                                denotes a letter in the plain
+                                                text, applying{" "}
+                                                <InlineMath math="E(E(\alpha)) = \alpha" />{" "}
+                                                for some configuration of rotors
+                                                and plugboard. This is pretty
+                                                easy to show if you notice that
+                                                the encryption scheme{" "}
+                                                <InlineMath math="E = PR_{nkj} U R^{-1}_{nkj} P^{-1}" />
+                                                where we&apos;ve denoted{" "}
+                                                <InlineMath math="R_{nkj} = (C^k R_1 C^{-k})(C^l R_2 C^{-l})(C^m R_3 C^{-m})" />
+                                                .
+                                            </Typography.Paragraph>
+                                            <Typography.Paragraph>
+                                                Now applying{" "}
+                                                <InlineMath math="E" /> twice is
+                                                easy:
+                                                <BlockMath
+                                                    math={`
+                                                            \\begin{aligned}
+                                                            E(E(\\alpha))
+                                                            &= (P R_{nkj} U R^{-1}_{nkj} P^{-1})(P R_{nkj} U R^{-1}_{nkj} P^{-1})(\\alpha) \\\\
+                                                            &= P R_{nkj} U R^{-1}_{nkj} (P^{-1} P) R_{nkj} U R^{-1}_{nkj} P^{-1}(\\alpha) \\\\
+                                                            &= P R_{nkj} U (R^{-1}_{nkj} R_{nkj}) U R^{-1}_{nkj} P^{-1}(\\alpha) \\\\
+                                                            &= P R_{nkj} (U U) R^{-1}_{nkj} P^{-1}(\\alpha) \\\\
+                                                            &= \\alpha
+                                                            \\end{aligned}
+                                                        `}
+                                                />
+                                            </Typography.Paragraph>
+                                            <Typography.Paragraph>
+                                                {" "}
+                                                Where we&apos;ve used the fact
+                                                that <InlineMath math="U" /> is
+                                                its own inverse.
+                                            </Typography.Paragraph>
+                                        </>
+                                    ),
+                                },
+                            ]}
+                        ></Collapse>
+                    </Typography.Paragraph>
+                    <Typography.Title level={2}>
+                        Encryption Process
+                    </Typography.Title>
+                    <Typography.Paragraph>
+                        Let&apos;s encrypt a letter, step-by-step.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        Let&apos;s have an enigma configured with rotors of
+                        types (3 2 1) and in positions: (A A B). Let&apos;s also
+                        have the plugboard configured with one swap: (L D).
+                        Let&apos;s also set the reflector to be Reflector B.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        When we press the letter D on the keyboard, the first
+                        thing that happens is that the rightmost rotor advances
+                        by one step. Each of the five rotors has a specific
+                        “notch” letter that triggers a stepping mechanism for
+                        the rotor to its left. This stepping mechanism
+                        determines when the next rotor should rotate. For
+                        example, Rotor #1 is configured so that it triggers the
+                        next rotor when it reaches the letter R. However, after
+                        this key press, the rightmost rotor moves to the
+                        position C, which is not its stepping trigger. As a
+                        result, the middle rotor does not advance and remains in
+                        its current position.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        Now we pass through the plugboard.{" "}
+                        <InlineMath math="P(D) = L" />. Onward to the first
+                        rotor -{" "}
+                        <InlineMath math="C^{-2}(R_1 (C^2(L))) = C^{-2}(R_1(N)) = C^{-2}(W) = U" />
+                        . Where I have used the <InlineMath math="R_1" /> as it
+                        is given in the table below:
+                    </Typography.Paragraph>
+                    <div className="pb-4">
+                        <RotorTable />
+                    </div>
+                    <Typography.Paragraph>
+                        Next we go through <InlineMath math="R_2" /> and{" "}
+                        <InlineMath math="R_3" />. Luckily they are at position
+                        &apos;A&apos; which corresponds to{" "}
+                        <InlineMath math="C^0 = I" /> which maps every letter to
+                        itself. <InlineMath math="R_3(R_2(U)) = R_3(P) = E" />
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        Now through the reflector and all the way back:
+                        <InlineMath math="R_2^{-1}(R_3^{-1}(U(E))) = R_2^{-1}(R_3^{-1}(Q) = R_2^{-1}(Y) = V" />
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        Back through the first rotor:
+                        <InlineMath math="C^{-2}(R_1^{-1} (C^2(V))) = C^{-2}(R_1^{-1}(X)) = C^{-2}(Q) = O" />
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        And finally
+                        <InlineMath math="P(O) = O" />
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        You can verify for yourself that for the same initial
+                        configuration the output of the letter &apos;O&apos; is
+                        &apos;D&apos;.
+                    </Typography.Paragraph>
                 </div>
             </Content>
         </Layout>
