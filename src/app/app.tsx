@@ -9,6 +9,8 @@ import { SubstitutionCipherLetterMapping } from "../components/substitution-ciph
 import Link from "antd/es/typography/Link";
 import { UnityLoader } from "../components/unity-loader/unity-loader";
 import RotorTable from "../components/rotor-table/rotor-table";
+import { CLONE_COMMAND, FURTHER_CHALLENGE_CIPHER } from "../consts/consts";
+import CodeBox from "../components/code-box/code-box";
 
 function App() {
     return (
@@ -491,13 +493,70 @@ function App() {
                         <InlineMath math="C^{-2}(R_1^{-1} (C^2(V))) = C^{-2}(R_1^{-1}(X)) = C^{-2}(Q) = O" />
                     </Typography.Paragraph>
                     <Typography.Paragraph>
-                        And finally
-                        <InlineMath math="P(O) = O" />
+                        And finally <InlineMath math="P(O) = O" />
                     </Typography.Paragraph>
                     <Typography.Paragraph>
                         You can verify for yourself that for the same initial
                         configuration the output of the letter &apos;O&apos; is
                         &apos;D&apos;.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        To see that you understand everything so far, try to
+                        calculate the number of enigma configurations, when:
+                        <ol>
+                            <li>There are three reflectors.</li>
+                            <li>
+                                There are 5 available rotors to choose from.
+                                There are three rotor places in our Enigma.
+                                (Remember that each rotor has 26 initial
+                                positions)
+                            </li>
+                            <li>There are exactly 10 letter swaps.</li>
+                        </ol>
+                    </Typography.Paragraph>
+                    <Typography.Title level={2}>
+                        Breaking the Cipher
+                    </Typography.Title>
+                    In this section you&apos;ll be challenged to break the
+                    enigma cipher using code. A simulation of an enigma machine
+                    will be available to you as a{" "}
+                    <Link href="https://rust-lang.org/">Rust</Link> crate. It is
+                    very simple to use and there are examples if you need them.
+                    Run the following command to clone a starter kit
+                    (you&apos;re going to need git to run this project):
+                    <CodeBox code={CLONE_COMMAND} />
+                    <Typography.Paragraph>
+                        There are instructions in the readme file, but I will
+                        provide a further explanation here. In the challenge
+                        you&apos;re given a plain text message and its
+                        corresponding cipher message. Your job is to find the
+                        enigma configuration that was used to encrypt the
+                        message. This type of attack on a cipher is called a
+                        known plaintext attack.
+                    </Typography.Paragraph>
+                    <Typography.Paragraph>
+                        In the war, finding this configuration would allow you
+                        to decrypt all the messages that were sent during this
+                        day. Another cipher, encrypted with the same key is also
+                        attached in the challenge instructions. Find what it
+                        says to complete the challenge!
+                    </Typography.Paragraph>
+                    <Typography.Title level={3}>
+                        Further Challenge
+                    </Typography.Title>
+                    <Typography.Paragraph>
+                        Another challenge is to try breaking the cipher without
+                        any knowledge of the plaintext - a much more realistic
+                        challenge. Read about{" "}
+                        <Link href="https://en.wikipedia.org/wiki/Index_of_coincidence">
+                            Index of Coincidence
+                        </Link>{" "}
+                        and try to decipher the following message:
+                    </Typography.Paragraph>
+                    <CodeBox code={FURTHER_CHALLENGE_CIPHER} />
+                    <Typography.Paragraph>
+                        The message was encrypted using reflector A and 10
+                        letter swaps.
                     </Typography.Paragraph>
                 </div>
             </Content>
