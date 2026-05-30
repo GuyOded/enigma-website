@@ -11,7 +11,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "rimraf public/assets",
+    "predeploy": "rimraf dist/assets/build && rimraf dist/.gitkeep",
     "deploy": "wrangler pages deploy dist"
   },
   "dependencies": {
