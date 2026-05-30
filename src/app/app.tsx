@@ -48,11 +48,11 @@ function App() {
                     </div>
                     <Typography.Paragraph>
                         Let&apos;s denote this mapping as{" "}
-                        <InlineMath math="E_C"></InlineMath> so that{" "}
-                        <InlineMath math="E_C(A)=B, E_C(B)=C" /> and so on. To
-                        decrypt a message, simply apply the reverse mapping that
-                        can be derived from the diagram above by reversing the
-                        direction of each arrow.
+                        <InlineMath math={String.raw`E_C`}></InlineMath> so that{" "}
+                        <InlineMath math={String.raw`E_C(A)=B, E_C(B)=C`} /> and
+                        so on. To decrypt a message, simply apply the reverse
+                        mapping that can be derived from the diagram above by
+                        reversing the direction of each arrow.
                     </Typography.Paragraph>
                     <Typography.Paragraph>
                         This cipher is very, very simple to break and it has a
@@ -72,9 +72,12 @@ function App() {
                         need to complicate it slightly.
                     </Typography.Paragraph>
                     <Typography.Paragraph>
-                        Note that we can apply <InlineMath math="E_C" />{" "}
-                        consecutively like this{" "}
-                        <InlineMath math="E_C^2(A) = E_C(E_C(A)) = E_C(B) = C" />
+                        Note that we can apply{" "}
+                        <InlineMath math={String.raw`E_C`} /> consecutively like
+                        this{" "}
+                        <InlineMath
+                            math={String.raw`E_C^2(A) = E_C(E_C(A)) = E_C(B) = C`}
+                        />
                         . This gives us a new letter map where each letter is
                         mapped to it&apos;s next nearest neighbor from above.
                         Each number we choose between 1 and 25 will give us a
@@ -84,11 +87,12 @@ function App() {
                     </Typography.Paragraph>
                     <Typography.Paragraph>
                         A suggestion for key could be some number,{" "}
-                        <InlineMath math="n" />, that represents the number of
-                        times the Caesar map was applied in order to encrypt.
-                        The sender and receiver can agree upon this number
-                        before sending messages. To encrypt a message the sender
-                        would apply <InlineMath math="E_C^n" /> to each letter
+                        <InlineMath math={String.raw`n`} />, that represents the
+                        number of times the Caesar map was applied in order to
+                        encrypt. The sender and receiver can agree upon this
+                        number before sending messages. To encrypt a message the
+                        sender would apply{" "}
+                        <InlineMath math={String.raw`E_C^n`} /> to each letter
                         and the receiver would apply the reverse map n times in
                         order to decrypt the message.
                     </Typography.Paragraph>
@@ -116,15 +120,16 @@ function App() {
                         further. Each letter we encrypt, we apply the encryption
                         map one more time. For example, say we want to encrypt
                         the word &apos;HELLO&apos; and that our key is{" "}
-                        <InlineMath math="n" />. We calculate the first letter
-                        by: <InlineMath math="E_C^n(H)" />. For the second{" "}
-                        <InlineMath math="E_C^{n+1}" />, for the third{" "}
-                        <InlineMath math="E_C^{n+2}" />. We continue like that
-                        until we reach a letter where we have to apply{" "}
-                        <InlineMath math="E_C" /> 26 times. In this case, we
-                        change our counter back to 1 and continue the process
-                        from there. Our key now becomes the initial state of the
-                        counting process.
+                        <InlineMath math={String.raw`n`} />. We calculate the
+                        first letter by:{" "}
+                        <InlineMath math={String.raw`E_C^n(H)`} />. For the
+                        second <InlineMath math={String.raw`E_C^{n+1}`} />, for
+                        the third <InlineMath math={String.raw`E_C^{n+2}`} />.
+                        We continue like that until we reach a letter where we
+                        have to apply <InlineMath math={String.raw`E_C`} /> 26
+                        times. In this case, we change our counter back to 1 and
+                        continue the process from there. Our key now becomes the
+                        initial state of the counting process.
                     </Typography.Paragraph>
                     <Typography.Paragraph>
                         This new method, resolves the issue of the constant
@@ -208,7 +213,9 @@ function App() {
                                                 counted every map twice. To
                                                 correct for this overcounting,
                                                 we divide by 2, giving:
-                                                <InlineMath math="\frac{26 \cdot 25}{2} = 325"></InlineMath>
+                                                <InlineMath
+                                                    math={String.raw`\frac{26 \cdot 25}{2} = 325`}
+                                                ></InlineMath>
                                                 .
                                             </Typography.Paragraph>
                                             <Typography.Paragraph>
@@ -217,7 +224,9 @@ function App() {
                                                 letter pairs. First, we choose
                                                 four distinct letters, which can
                                                 be done in{" "}
-                                                <InlineMath math="26 \cdot 25 \cdot 24 \cdot 23" />{" "}
+                                                <InlineMath
+                                                    math={String.raw`26 \cdot 25 \cdot 24 \cdot 23`}
+                                                />{" "}
                                                 ways.
                                             </Typography.Paragraph>
 
@@ -229,7 +238,10 @@ function App() {
                                                 substitution. Therefore, we
                                                 divide by 2 for each pair,
                                                 giving a factor of{" "}
-                                                <InlineMath math="2^2" />.
+                                                <InlineMath
+                                                    math={String.raw`2^2`}
+                                                />
+                                                .
                                             </Typography.Paragraph>
 
                                             <Typography.Paragraph>
@@ -237,17 +249,25 @@ function App() {
                                                 pairs themselves is irrelevant:
                                                 (A B)(C D) represents the same
                                                 map as (C D)(A B). Since there
-                                                are <InlineMath math="2!" />{" "}
+                                                are{" "}
+                                                <InlineMath
+                                                    math={String.raw`2!`}
+                                                />{" "}
                                                 ways to order two pairs, we
                                                 divide by another factor of{" "}
-                                                <InlineMath math="2" />.
+                                                <InlineMath
+                                                    math={String.raw`2`}
+                                                />
+                                                .
                                             </Typography.Paragraph>
 
                                             <Typography.Paragraph>
                                                 Altogether, the number of
                                                 possible maps consisting of two
                                                 pairs is{" "}
-                                                <InlineMath math="\frac{26 \cdot 25 \cdot 24 \cdot 23}{2^2 \cdot 2!}=44850" />
+                                                <InlineMath
+                                                    math={String.raw`\frac{26 \cdot 25 \cdot 24 \cdot 23}{2^2 \cdot 2!}=44850`}
+                                                />
                                                 .
                                             </Typography.Paragraph>
                                             <Typography.Paragraph>
@@ -330,37 +350,43 @@ function App() {
                         with letters representing each stage of the encryption.
                         We will then dive into what each letter means.
                     </Typography.Paragraph>
-                    <BlockMath math="E = P^{-1}(C^{-k} R_1^{-1} C^k)(C^{-l} R_2^{-1} C^l)(C^{-m} R_3^{-1} C^m)U(C^{-m} R_3 C^m)(C^{-l} R_2 C^l)(C^{-k} R_1 C^k)P" />
+                    <BlockMath
+                        math={String.raw`E = P^{-1}(C^{-k} R_1^{-1} C^k)(C^{-l} R_2^{-1} C^l)(C^{-m} R_3^{-1} C^m)U(C^{-m} R_3 C^m)(C^{-l} R_2 C^l)(C^{-k} R_1 C^k)P`}
+                    />
                     <Typography.Paragraph>
                         The equation above means essentially means - the
-                        encryption function, <InlineMath math="E" />, is
-                        constructed by applying the components of the right hand
-                        side in order. We&apos;ll go through each of the
+                        encryption function, <InlineMath math={String.raw`E`} />
+                        , is constructed by applying the components of the right
+                        hand side in order. We&apos;ll go through each of the
                         components in order.
                     </Typography.Paragraph>
                     <Typography.Paragraph>
-                        <InlineMath math="P" /> for plugboard is the letter swap
-                        permutation determined by the plugboard connections.
-                        Note that this permutation is its own inverse. So{" "}
-                        <InlineMath math="P=P^{-1}" /> and{" "}
-                        <InlineMath math="P^2 = I" /> where{" "}
-                        <InlineMath math="I" /> is the identity meaning that for
-                        each letter <InlineMath math="l" />,{" "}
-                        <InlineMath math="I(l) = l" />.
+                        <InlineMath math={String.raw`P`} /> for plugboard is the
+                        letter swap permutation determined by the plugboard
+                        connections. Note that this permutation is its own
+                        inverse. So <InlineMath math={String.raw`P=P^{-1}`} />{" "}
+                        and <InlineMath math={String.raw`P^2 = I`} /> where{" "}
+                        <InlineMath math={String.raw`I`} /> is the identity
+                        meaning that for each letter{" "}
+                        <InlineMath math={String.raw`l`} />,{" "}
+                        <InlineMath math={String.raw`I(l) = l`} />.
                     </Typography.Paragraph>
                     <Typography.Paragraph>
                         Next is the rotor permutation which consists of some
-                        generic permutation denoted by <InlineMath math="R_1" />{" "}
-                        surrounded by two Caesar ciphers raised to the power of{" "}
-                        <InlineMath math="k" /> and <InlineMath math="-k" />.
-                        The <InlineMath math="k" /> represents the position of
-                        the first rotor. So before a letter goes through{" "}
-                        <InlineMath math="R_1" /> it first passes through{" "}
-                        <InlineMath math="C^{-k}" /> which is the Caesar cipher
-                        that maps A to the (26-k)-th letter. And resultant
-                        letter, after passing through <InlineMath math="R_1" />{" "}
-                        passes through another Caesar cipher, mapping A to the
-                        k-th letter in the alphabet.
+                        generic permutation denoted by{" "}
+                        <InlineMath math={String.raw`R_1`} /> surrounded by two
+                        Caesar ciphers raised to the power of{" "}
+                        <InlineMath math={String.raw`k`} /> and{" "}
+                        <InlineMath math={String.raw`-k`} />. The{" "}
+                        <InlineMath math={String.raw`k`} /> represents the
+                        position of the first rotor. So before a letter goes
+                        through <InlineMath math={String.raw`R_1`} /> it first
+                        passes through <InlineMath math={String.raw`C^{-k}`} />{" "}
+                        which is the Caesar cipher that maps A to the (26-k)-th
+                        letter. And resultant letter, after passing through{" "}
+                        <InlineMath math={String.raw`R_1`} /> passes through
+                        another Caesar cipher, mapping A to the k-th letter in
+                        the alphabet.
                     </Typography.Paragraph>
                     <Typography.Paragraph>
                         Each rotor applied a different letter permutation. Most
@@ -372,7 +398,8 @@ function App() {
                         the encryption. This resulted in 60 possible rotor
                         arrangements. There are 10 ways to choose 3 rotors from
                         5, and each choice can be ordered in 6 different ways,
-                        giving a total of <InlineMath math="10 \times 6 = 60" />{" "}
+                        giving a total of{" "}
+                        <InlineMath math={String.raw`10 \times 6 = 60`} />{" "}
                         configurations.
                     </Typography.Paragraph>
                     <Typography.Paragraph>
@@ -399,41 +426,54 @@ function App() {
                                         <>
                                             <Typography.Paragraph>
                                                 All we need to show is that if{" "}
-                                                <InlineMath math="\alpha" />{" "}
+                                                <InlineMath
+                                                    math={String.raw`\alpha`}
+                                                />{" "}
                                                 denotes a letter in the plain
                                                 text, applying{" "}
-                                                <InlineMath math="E(E(\alpha)) = \alpha" />{" "}
+                                                <InlineMath
+                                                    math={String.raw`E(E(\alpha)) = \alpha`}
+                                                />{" "}
                                                 for some configuration of rotors
                                                 and plugboard. This is pretty
                                                 easy to show if you notice that
                                                 the encryption scheme{" "}
-                                                <InlineMath math="E = PR_{nkj} U R^{-1}_{nkj} P^{-1}" />
+                                                <InlineMath
+                                                    math={String.raw`E = PR_{nkj} U R^{-1}_{nkj} P^{-1}`}
+                                                />
                                                 where we&apos;ve denoted{" "}
-                                                <InlineMath math="R_{nkj} = (C^k R_1 C^{-k})(C^l R_2 C^{-l})(C^m R_3 C^{-m})" />
+                                                <InlineMath
+                                                    math={String.raw`R_{nkj} = (C^k R_1 C^{-k})(C^l R_2 C^{-l})(C^m R_3 C^{-m})`}
+                                                />
                                                 .
                                             </Typography.Paragraph>
                                             <Typography.Paragraph>
                                                 Now applying{" "}
-                                                <InlineMath math="E" /> twice is
-                                                easy:
+                                                <InlineMath
+                                                    math={String.raw`E`}
+                                                />{" "}
+                                                twice is easy:
                                                 <BlockMath
-                                                    math={`
-                                                            \\begin{aligned}
-                                                            E(E(\\alpha))
-                                                            &= (P R_{nkj} U R^{-1}_{nkj} P^{-1})(P R_{nkj} U R^{-1}_{nkj} P^{-1})(\\alpha) \\\\
-                                                            &= P R_{nkj} U R^{-1}_{nkj} (P^{-1} P) R_{nkj} U R^{-1}_{nkj} P^{-1}(\\alpha) \\\\
-                                                            &= P R_{nkj} U (R^{-1}_{nkj} R_{nkj}) U R^{-1}_{nkj} P^{-1}(\\alpha) \\\\
-                                                            &= P R_{nkj} (U U) R^{-1}_{nkj} P^{-1}(\\alpha) \\\\
-                                                            &= \\alpha
-                                                            \\end{aligned}
+                                                    math={String.raw`
+                                                            \begin{aligned}
+                                                            E(E(\alpha))
+                                                            &= (P R_{nkj} U R^{-1}_{nkj} P^{-1})(P R_{nkj} U R^{-1}_{nkj} P^{-1})(\alpha) \\
+                                                            &= P R_{nkj} U R^{-1}_{nkj} (P^{-1} P) R_{nkj} U R^{-1}_{nkj} P^{-1}(\alpha) \\
+                                                            &= P R_{nkj} U (R^{-1}_{nkj} R_{nkj}) U R^{-1}_{nkj} P^{-1}(\alpha) \\
+                                                            &= P R_{nkj} (U U) R^{-1}_{nkj} P^{-1}(\alpha) \\
+                                                            &= \alpha
+                                                            \end{aligned}
                                                         `}
                                                 />
                                             </Typography.Paragraph>
                                             <Typography.Paragraph>
                                                 {" "}
                                                 Where we&apos;ve used the fact
-                                                that <InlineMath math="U" /> is
-                                                its own inverse.
+                                                that{" "}
+                                                <InlineMath
+                                                    math={String.raw`U`}
+                                                />{" "}
+                                                is its own inverse.
                                             </Typography.Paragraph>
                                         </>
                                     ),
@@ -469,32 +509,42 @@ function App() {
                     </Typography.Paragraph>
                     <Typography.Paragraph>
                         Now we pass through the plugboard.{" "}
-                        <InlineMath math="P(D) = L" />. Onward to the first
-                        rotor -{" "}
-                        <InlineMath math="C^{-2}(R_1 (C^2(L))) = C^{-2}(R_1(N)) = C^{-2}(W) = U" />
-                        . Where I have used the <InlineMath math="R_1" /> as it
-                        is given in the table below:
+                        <InlineMath math={String.raw`P(D) = L`} />. Onward to
+                        the first rotor -{" "}
+                        <InlineMath
+                            math={String.raw`C^{-2}(R_1 (C^2(L))) = C^{-2}(R_1(N)) = C^{-2}(W) = U`}
+                        />
+                        . Where I have used the{" "}
+                        <InlineMath math={String.raw`R_1`} /> as it is given in
+                        the table below:
                     </Typography.Paragraph>
                     <div className="pb-4">
                         <RotorTable />
                     </div>
                     <Typography.Paragraph>
-                        Next we go through <InlineMath math="R_2" /> and{" "}
-                        <InlineMath math="R_3" />. Luckily they are at position
-                        &apos;A&apos; which corresponds to{" "}
-                        <InlineMath math="C^0 = I" /> which maps every letter to
-                        itself. <InlineMath math="R_3(R_2(U)) = R_3(P) = E" />
+                        Next we go through <InlineMath math={String.raw`R_2`} />{" "}
+                        and <InlineMath math={String.raw`R_3`} />. Luckily they
+                        are at position &apos;A&apos; which corresponds to{" "}
+                        <InlineMath math={String.raw`C^0 = I`} /> which maps
+                        every letter to itself.{" "}
+                        <InlineMath
+                            math={String.raw`R_3(R_2(U)) = R_3(P) = E`}
+                        />
                     </Typography.Paragraph>
                     <Typography.Paragraph>
                         Now through the reflector and all the way back:
-                        <InlineMath math="R_2^{-1}(R_3^{-1}(U(E))) = R_2^{-1}(R_3^{-1}(Q) = R_2^{-1}(Y) = V" />
+                        <InlineMath
+                            math={String.raw`R_2^{-1}(R_3^{-1}(U(E))) = R_2^{-1}(R_3^{-1}(Q) = R_2^{-1}(Y) = V`}
+                        />
                     </Typography.Paragraph>
                     <Typography.Paragraph>
                         Back through the first rotor:
-                        <InlineMath math="C^{-2}(R_1^{-1} (C^2(V))) = C^{-2}(R_1^{-1}(X)) = C^{-2}(Q) = O" />
+                        <InlineMath
+                            math={String.raw`C^{-2}(R_1^{-1} (C^2(V))) = C^{-2}(R_1^{-1}(X)) = C^{-2}(Q) = O`}
+                        />
                     </Typography.Paragraph>
                     <Typography.Paragraph>
-                        And finally <InlineMath math="P(O) = O" />
+                        And finally <InlineMath math={String.raw`P(O) = O`} />
                     </Typography.Paragraph>
                     <Typography.Paragraph>
                         You can verify for yourself that for the same initial
