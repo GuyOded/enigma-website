@@ -39,7 +39,7 @@ const columns = [
         title: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         dataIndex: "wiring",
         key: "wiring",
-        render: (text) => (
+        render: (text: string) => (
             <span style={{ fontFamily: "monospace", letterSpacing: "1.2px" }}>
                 {text}
             </span>
