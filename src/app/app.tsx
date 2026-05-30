@@ -319,7 +319,7 @@ function App() {
                         three rotor enigma looks like. Try to encrypt and
                         decrypt a message.
                     </Typography.Paragraph>
-                    <UnityLoader buildDataBasePath="../../../.local/v2.1.0" />
+                    <UnityLoader buildDataBasePath="/assets/build" />
                     <Typography.Title level={2}>
                         The Encryption Function
                     </Typography.Title>
