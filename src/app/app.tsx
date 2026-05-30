@@ -11,6 +11,7 @@ import { UnityLoader } from "../components/unity-loader/unity-loader";
 import RotorTable from "../components/rotor-table/rotor-table";
 import { CLONE_COMMAND, FURTHER_CHALLENGE_CIPHER } from "../consts/consts";
 import CodeBox from "../components/code-box/code-box";
+import { UNITY_ASSETS_PATH } from "../config/app-config";
 
 function App() {
     return (
@@ -319,7 +320,7 @@ function App() {
                         three rotor enigma looks like. Try to encrypt and
                         decrypt a message.
                     </Typography.Paragraph>
-                    <UnityLoader buildDataBasePath="/assets/build" />
+                    <UnityLoader buildDataBasePath={UNITY_ASSETS_PATH} />
                     <Typography.Title level={2}>
                         The Encryption Function
                     </Typography.Title>

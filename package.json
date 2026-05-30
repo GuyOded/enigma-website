@@ -6,11 +6,13 @@
   "scripts": {
     "clean-unity-assets": "rimraf public/assets",
     "fetch-unity-assets": "tsx build-scripts/fetch-unity-assets.ts",
+    "upload-assets": "",
     "dev": "vite",
-    "prebuild": "npm run fetch-unity-assets",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "rimraf public/assets",
+    "deploy": "wrangler pages deploy dist"
   },
   "dependencies": {
     "@ant-design/icons": "^6.2.3",
@@ -31,6 +33,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/react-katex": "^3.0.4",
     "@vitejs/plugin-react": "^6.0.1",
+    "argparse-ts": "^0.9.0",
     "eslint": "^9.39.4",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
